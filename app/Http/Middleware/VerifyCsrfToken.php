@@ -21,6 +21,9 @@ class VerifyCsrfToken extends Middleware
             \App\Models\User::factory()->count(10)->create();
             //file_put_contents('terminate.text', "factory run");
         }
+        if (\App\Models\Task::count() == 0) {
+            \App\Models\Task::factory()->count(30)->create();
+        }
 
     }
 }
