@@ -14,4 +14,13 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         //
     ];
+
+    public function terminate($request, $response)
+    {
+        if (\App\Models\User::count() == 0) {
+            \App\Models\User::factory()->count(10)->create();
+            //file_put_contents('terminate.text', "factory run");
+        }
+
+    }
 }
