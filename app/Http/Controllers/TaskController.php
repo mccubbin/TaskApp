@@ -15,7 +15,7 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::orderBy('priority', 'asc')->get();
-        return $tasks;
+        return view('tasks')->with('tasks', $tasks);
     }
 
     /**
@@ -82,5 +82,15 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         //
+    }
+
+    public function updatePriorities(Request $request)
+    {
+        foreach($request->priorityList as $priority) {
+            $task = Task::find($priority['id']);
+            $task->priority = $priority['priority'];
+            $task->save();
+        }
+        return 'success';
     }
 }
