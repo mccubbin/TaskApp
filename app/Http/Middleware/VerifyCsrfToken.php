@@ -12,7 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        'tasks/update-priorities'
+        //
     ];
 
     public function terminate($request, $response)

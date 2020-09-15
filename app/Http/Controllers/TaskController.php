@@ -14,8 +14,10 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::orderBy('priority', 'asc')->get();
-        return view('tasks')->with('tasks', $tasks);
+        $tasks = Task::orderBy('priority', 'asc')
+            ->orderBy('created_at', 'asc')
+            ->get();
+        return view('task.index')->with('tasks', $tasks);
     }
 
     /**
@@ -25,7 +27,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        return view('task.create');
     }
 
     /**
@@ -36,7 +38,15 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'priority' => 'required',
+        ]);
+
+        Task::create($request->all());
+        return redirect()
+            ->route('tasks.index')
+            ->with('message', 'Task created successfully');
     }
 
     /**
@@ -47,7 +57,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        return view('task.show')->with('task', $task);
     }
 
     /**
@@ -58,7 +68,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        return view('task.edit')->with('task', $task);
     }
 
     /**
@@ -70,7 +80,15 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'priority' => 'required',
+        ]);
+
+        $task->update($request->all());
+        return redirect()
+            ->route('tasks.index')
+            ->with('message', 'Task edited successfully');
     }
 
     /**
@@ -81,7 +99,10 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+        return redirect()
+            ->route('tasks.index')
+            ->with('message', 'Task has been deleted.');
     }
 
     public function updatePriorities(Request $request)
